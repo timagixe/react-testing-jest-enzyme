@@ -11,12 +11,12 @@ export const GuessedWords = ({ guessedWords }) => {
 
             {hasGuessedWords && (
                 <div data-test="guessed-words-section">
-                    <h1>Guessed Words</h1>
-                    <table>
-                        <thead>
+                    <h1 className="display-6">Guessed Words</h1>
+                    <table className="table table-striped table-bordered">
+                        <thead className="thead-light">
                             <tr>
-                                <th>Words</th>
-                                <th>Matched Letters Count</th>
+                                <th scope="col">Words</th>
+                                <th scope="col">Matched Letters Count</th>
                             </tr>
                         </thead>
                         <tbody>
