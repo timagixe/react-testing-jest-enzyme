@@ -1,7 +1,7 @@
 import Enzyme, { shallow } from "enzyme";
 import EnzymeAdapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { Congrats } from "./Congrats";
-import { findByDataTestAttribute } from "../utils";
+import { checkProps, findByDataTestAttribute } from "../utils";
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -29,5 +29,10 @@ describe("Congrats component", () => {
         const congratsMessage = findByDataTestAttribute(wrapper, "congrats-message");
         const congratsMessageTextLength = congratsMessage.text().length;
         expect(congratsMessageTextLength).not.toBe(0);
+    });
+
+    test("has no warnings with expected props", () => {
+        const expectedProps = { success: true };
+        checkProps(Congrats, expectedProps);
     });
 });
