@@ -16,7 +16,7 @@ describe("Congrats component", () => {
     });
 
     test("renders no text when props.success is false", () => {
-        const wrapper = setup({ success: true });
+        const wrapper = setup({ success: false });
         // eslint-disable-next-line testing-library/await-async-query
         const congratsComponent = findByDataTestAttribute(wrapper, "congrats-component");
         const congratsComponentText = congratsComponent.text();
