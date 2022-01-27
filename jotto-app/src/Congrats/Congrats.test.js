@@ -1,11 +1,10 @@
-import Enzyme, { shallow } from "enzyme";
-import EnzymeAdapter from "@wojtekmaj/enzyme-adapter-react-17";
+import { shallow } from "enzyme";
 import { Congrats } from "./Congrats";
 import { checkProps, findByDataTestAttribute } from "../utils";
 
-Enzyme.configure({ adapter: new EnzymeAdapter() });
+const defaultProps = { success: false };
 
-const setup = (props = {}) => shallow(<Congrats {...props} />);
+const setup = (props = {}) => shallow(<Congrats {...{ ...defaultProps, ...props }} />);
 
 describe("Congrats component", () => {
     test("renders", async () => {
