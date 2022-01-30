@@ -17,7 +17,7 @@ function App() {
         <div data-test="app-component" className="container">
             <h1 className="display-4 d-flex justify-content-center">Guess The Word Game</h1>
             <Congrats success={success} />
-            <SecretWordInput secretWord={secretWord} success={success} />
+            <SecretWordInput secretWord={secretWord} />
             <GuessedWords guessedWords={guessedWords} />
         </div>
     );
