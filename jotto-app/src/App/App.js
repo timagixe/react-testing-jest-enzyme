@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { getSecretWord } from "../actions";
 import { Congrats } from "../Congrats/Congrats";
 import { GuessedWords } from "../GuessedWords/GuessedWords";
 import { SecretWordInput } from "../SecretWordInput/SecretWordInput";
@@ -7,6 +8,10 @@ function App() {
     const [secretWord] = React.useState("daylight");
     const [success] = React.useState(false);
     const [guessedWords] = React.useState([]);
+
+    useEffect(() => {
+        getSecretWord();
+    }, []);
 
     return (
         <div data-test="app-component" className="container">
