@@ -1,6 +1,9 @@
 import { mount } from "enzyme";
 import { findByDataTestAttribute } from "../utils";
 import App from "./App";
+import { getSecretWord as mockedGetSecretWord } from "../actions";
+
+jest.mock("../actions");
 
 const setup = (state = {}) => {
     const wrapper = mount(<App />);
@@ -149,5 +152,22 @@ describe("App component", () => {
             expect(guessedWord).toHaveLength(state.guessedWords + 1);
         } */
         );
+    });
+
+    describe("getSecretWords action", () => {
+        beforeEach(() => {
+            mockedGetSecretWord.mockClear();
+        });
+
+        test("calls when component mounts", async () => {
+            setup();
+            expect(mockedGetSecretWord).toHaveBeenCalled();
+        });
+
+        test("does not call when component updates", () => {
+            const wrapper = setup();
+            wrapper.setProps();
+            expect(mockedGetSecretWord).toHaveBeenCalledTimes(1);
+        });
     });
 });
