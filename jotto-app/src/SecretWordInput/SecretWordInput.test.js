@@ -5,12 +5,10 @@ import { SecretWordInput } from "./SecretWordInput";
 import { Provider } from "react-redux";
 
 const SECRET_WORD = "coffee";
-
 const defaultProps = { secretWord: SECRET_WORD };
 
 const setup = ({ initialState, props } = { initialState: { success: false }, props: {} }) => {
     const store = storeFactory(initialState);
-
     return mount(
         <Provider store={store}>
             <SecretWordInput {...{ ...defaultProps, ...props }} />

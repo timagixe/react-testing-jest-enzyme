@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { getSecretWord } from "../actions";
 import { Congrats } from "../Congrats/Congrats";
 import { GuessedWords } from "../GuessedWords/GuessedWords";
@@ -6,7 +7,7 @@ import { SecretWordInput } from "../SecretWordInput/SecretWordInput";
 
 function App() {
     const [secretWord] = React.useState("daylight");
-    const [success] = React.useState(false);
+    const success = useSelector((state) => state.success);
     const [guessedWords] = React.useState([]);
 
     useEffect(() => {

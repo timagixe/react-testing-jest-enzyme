@@ -1,12 +1,18 @@
 import { mount } from "enzyme";
-import { findByDataTestAttribute } from "../utils";
+import { findByDataTestAttribute, storeFactory } from "../utils";
 import App from "./App";
 import { getSecretWord as mockedGetSecretWord } from "../actions";
+import { Provider } from "react-redux";
 
 jest.mock("../actions");
 
-const setup = (state = {}) => {
-    const wrapper = mount(<App />);
+const setup = ({ initialState } = { initialState: { success: false } }) => {
+    const store = storeFactory(initialState);
+    const wrapper = mount(
+        <Provider store={store}>
+            <App />
+        </Provider>
+    );
 
     // eslint-disable-next-line testing-library/await-async-query
     const inputNode = findByDataTestAttribute(wrapper, "input-node");
