@@ -1,24 +1,27 @@
 import React from "react";
-import { shallow } from "enzyme";
-import { checkProps, findByDataTestAttribute } from "../utils";
+import { mount } from "enzyme";
+import { checkProps, findByDataTestAttribute, storeFactory } from "../utils";
 import { SecretWordInput } from "./SecretWordInput";
+import { Provider } from "react-redux";
 
 const SECRET_WORD = "coffee";
 
-const defaultProps = { success: false, secretWord: SECRET_WORD };
+const defaultProps = { secretWord: SECRET_WORD };
 
-const setup = (props = {}) => shallow(<SecretWordInput {...{ ...defaultProps, ...props }} />);
+const setup = ({ initialState, props } = { initialState: { success: false }, props: {} }) => {
+    const store = storeFactory(initialState);
+
+    return mount(
+        <Provider store={store}>
+            <SecretWordInput {...{ ...defaultProps, ...props }} />
+        </Provider>
+    );
+};
 
 describe("SecretWordInput component", () => {
     describe("when success equals to true", () => {
-        let wrapper;
-        const setupProps = { ...defaultProps, success: true };
-
-        beforeEach(() => {
-            wrapper = setup(setupProps);
-        });
-
         test("renders secretWordInputComponent", () => {
+            const wrapper = setup();
             // eslint-disable-next-line testing-library/await-async-query
             const secretWordInputComponent = findByDataTestAttribute(wrapper, "secret-word-input-component");
             const secretWordInputComponentExists = secretWordInputComponent.exists();
@@ -26,6 +29,7 @@ describe("SecretWordInput component", () => {
         });
 
         test("does not render inputNode", () => {
+            const wrapper = setup({ initialState: { success: true } });
             // eslint-disable-next-line testing-library/await-async-query
             const inputNode = findByDataTestAttribute(wrapper, "input-node");
             const inputNodeExists = inputNode.exists();
@@ -33,6 +37,7 @@ describe("SecretWordInput component", () => {
         });
 
         test("does not render submitButton", () => {
+            const wrapper = setup({ initialState: { success: true } });
             // eslint-disable-next-line testing-library/await-async-query
             const submitButton = findByDataTestAttribute(wrapper, "submit-button");
             const submitButtonExists = submitButton.exists();
@@ -42,10 +47,9 @@ describe("SecretWordInput component", () => {
 
     describe("when success equals to false", () => {
         let wrapper;
-        const setupProps = { ...defaultProps, success: false };
 
         beforeEach(() => {
-            wrapper = setup(setupProps);
+            wrapper = setup();
         });
 
         test("renders secretWordInputComponent", () => {
