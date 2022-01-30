@@ -1,5 +1,6 @@
+import { combineReducers } from "@reduxjs/toolkit";
 import { successReducer } from "./successSlice";
 
-export const rootReducer = {
+export const rootReducer = combineReducers({
     success: successReducer,
-};
+});
