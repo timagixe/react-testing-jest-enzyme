@@ -1,3 +1,4 @@
 import { getSecretWord } from "./getSecretWord";
+import { guessWord } from "./guessWord";
 
-export { getSecretWord };
+export { getSecretWord, guessWord };
