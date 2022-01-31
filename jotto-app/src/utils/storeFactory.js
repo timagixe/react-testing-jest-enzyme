@@ -1,4 +1,8 @@
-import { createStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "../reducers";
 
-export const storeFactory = (initialState) => createStore(rootReducer, initialState);
+export const storeFactory = (initialState) =>
+    configureStore({
+        reducer: rootReducer,
+        preloadedState: initialState,
+    });
