@@ -15,12 +15,12 @@ const setup = ({ initialState } = { initialState: { success: false } }) => {
     );
 
     // eslint-disable-next-line testing-library/await-async-query
-    const inputNode = findByDataTestAttribute(wrapper, "input-node");
-    inputNode.simulate("change", { target: { value: "station" } });
+    // const inputNode = findByDataTestAttribute(wrapper, "input-node");
+    // inputNode.simulate("change", { target: { value: "station" } });
 
     // eslint-disable-next-line testing-library/await-async-query
-    const submitButton = findByDataTestAttribute(wrapper, "submit-button");
-    submitButton.simulate("click", { preventDefault: () => {} });
+    // const submitButton = findByDataTestAttribute(wrapper, "submit-button");
+    // submitButton.simulate("click", { preventDefault: () => {} });
 
     return wrapper;
 };

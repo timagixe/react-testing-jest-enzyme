@@ -8,7 +8,7 @@ import { SecretWordInput } from "../SecretWordInput/SecretWordInput";
 function App() {
     const [secretWord] = React.useState("daylight");
     const success = useSelector((state) => state.success);
-    const [guessedWords] = React.useState([]);
+    const guessedWords = useSelector((state) => state.guessedWords);
 
     useEffect(() => {
         getSecretWord();
