@@ -1,4 +1,5 @@
 import moxios from "moxios";
+import { storeFactory } from "../utils";
 import { getSecretWord } from "./getSecretWord";
 
 const SECRET_WORD = "testing";
@@ -13,6 +14,7 @@ describe("getSecretWord action", () => {
     });
 
     test("returns secretWord", async () => {
+        const store = storeFactory();
         // eslint-disable-next-line testing-library/await-async-utils
         moxios.wait(() => {
             let request = moxios.requests.mostRecent();
@@ -22,8 +24,9 @@ describe("getSecretWord action", () => {
             });
         });
 
-        const secretWord = await getSecretWord();
-
-        expect(secretWord).toBe("testing");
+        return store.dispatch(getSecretWord()).then(() => {
+            const secretWord = store.getState().secretWord;
+            expect(secretWord).toBe("testing");
+        });
     });
 });

@@ -9,5 +9,9 @@ export const {
 } = createSlice({
     name: "secretWord",
     initialState,
-    reducers: {},
+    reducers: {
+        setSecretWord: (state, action) => {
+            return action.payload;
+        },
+    },
 });
