@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 
 jest.mock("../actions");
 
-const setup = ({ initialState } = { initialState: { success: false } }) => {
+const setup = ({ initialState, omitActions } = { initialState: { success: false }, omitActions: false }) => {
     const store = storeFactory(initialState);
     const wrapper = mount(
         <Provider store={store}>
@@ -14,13 +14,15 @@ const setup = ({ initialState } = { initialState: { success: false } }) => {
         </Provider>
     );
 
-    // eslint-disable-next-line testing-library/await-async-query
-    // const inputNode = findByDataTestAttribute(wrapper, "input-node");
-    // inputNode.simulate("change", { target: { value: "station" } });
+    if (!omitActions) {
+        // eslint-disable-next-line testing-library/await-async-query
+        const inputNode = findByDataTestAttribute(wrapper, "input-node");
+        inputNode.simulate("change", { target: { value: "daylight" } });
 
-    // eslint-disable-next-line testing-library/await-async-query
-    // const submitButton = findByDataTestAttribute(wrapper, "submit-button");
-    // submitButton.simulate("click", { preventDefault: () => {} });
+        // eslint-disable-next-line testing-library/await-async-query
+        const submitButton = findByDataTestAttribute(wrapper, "submit-button");
+        submitButton.simulate("click", { preventDefault: () => {} });
+    }
 
     return wrapper;
 };
@@ -28,13 +30,14 @@ const setup = ({ initialState } = { initialState: { success: false } }) => {
 describe("App component", () => {
     describe("with no guessed words", () => {
         let wrapper;
+        const initialState = {
+            success: false,
+            guessedWords: [],
+            secretWord: "daylight",
+        };
 
         beforeEach(() => {
-            wrapper = setup({
-                success: false,
-                guessedWords: [],
-                secretWord: "daylight",
-            });
+            wrapper = setup({ initialState, omitActions: true });
         });
 
         test("renders guess-words-instructions", () => {
@@ -52,7 +55,7 @@ describe("App component", () => {
 
     describe("with some guessed words", () => {
         let wrapper;
-        const state = {
+        const initialState = {
             success: false,
             guessedWords: [
                 { guessedWord: "train", letterMatchCount: 2 },
@@ -62,7 +65,7 @@ describe("App component", () => {
         };
 
         beforeEach(() => {
-            wrapper = setup(state);
+            wrapper = setup({ initialState, omitActions: true });
         });
 
         test("does not render congrats-message", () => {
@@ -71,34 +74,28 @@ describe("App component", () => {
             expect(congratsMessage).toHaveLength(0);
         });
 
-        test.todo(
-            "does not render guess-words-instructions" /* , () => {
+        test("does not render guess-words-instructions", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessWordsInstructions = findByDataTestAttribute(wrapper, "guess-words-instructions");
             expect(guessWordsInstructions).toHaveLength(0);
-        } */
-        );
+        });
 
-        test.todo(
-            "renders guessed-words-section" /* , () => {
+        test("renders guessed-words-section", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessedWordsSection = findByDataTestAttribute(wrapper, "guessed-words-section");
             expect(guessedWordsSection).toHaveLength(1);
-        } */
-        );
+        });
 
-        test.todo(
-            "renders as many guessed-word elements as passed in guessedWords plus one" /* , () => {
+        test("renders as many guessed-word elements as passed in guessedWords plus one", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessedWord = findByDataTestAttribute(wrapper, "guessed-word");
-            expect(guessedWord).toHaveLength(state.guessedWords.length + 1);
-        }*/
-        );
+            expect(guessedWord).toHaveLength(initialState.guessedWords.length);
+        });
     });
 
     describe("with guessed secret word", () => {
         let wrapper;
-        const state = {
+        const initialState = {
             success: false,
             guessedWords: [
                 { guessedWord: "train", letterMatchCount: 2 },
@@ -108,56 +105,44 @@ describe("App component", () => {
         };
 
         beforeEach(() => {
-            wrapper = setup(state);
+            wrapper = setup({ initialState });
         });
 
-        test.todo(
-            "renders congrats-message" /* , () => {
+        test("renders congrats-message", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const congratsMessage = findByDataTestAttribute(wrapper, "congrats-message");
             expect(congratsMessage).toHaveLength(1);
-        } */
-        );
+        });
 
-        test.todo(
-            "does not render input-node" /* , () => {
+        test("does not render input-node", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const inputNode = findByDataTestAttribute(wrapper, "input-node");
             expect(inputNode).toHaveLength(0);
-        } */
-        );
+        });
 
-        test.todo(
-            "does not render submit-button" /* , () => {
+        test("does not render submit-button", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const submitButton = findByDataTestAttribute(wrapper, "submit-button");
             expect(submitButton).toHaveLength(0);
-        } */
-        );
+        });
 
-        test.todo(
-            "does not render guess-words-instructions" /* , () => {
+        test("does not render guess-words-instructions", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessWordsInstructions = findByDataTestAttribute(wrapper, "guess-words-instructions");
             expect(guessWordsInstructions).toHaveLength(0);
-        } */
-        );
+        });
 
-        test.todo(
-            "renders guessed-words-section" /* , () => {
+        test("renders guessed-words-section", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessedWordsSection = findByDataTestAttribute(wrapper, "guessed-words-section");
             expect(guessedWordsSection).toHaveLength(1);
-        } */
-        );
+        });
 
-        test.todo(
-            "renders as many guessed-word as passed in guessedWords plus one" /* , () => {
+        test("renders as many guessed-word as passed in guessedWords plus one", () => {
             // eslint-disable-next-line testing-library/await-async-query
             const guessedWord = findByDataTestAttribute(wrapper, "guessed-word");
-            expect(guessedWord).toHaveLength(state.guessedWords + 1);
-        } */
-        );
+            expect(guessedWord).toHaveLength(initialState.guessedWords.length + 1);
+        });
     });
 
     describe("getSecretWords action", () => {
