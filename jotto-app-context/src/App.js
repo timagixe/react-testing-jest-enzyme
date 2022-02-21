@@ -16,7 +16,7 @@ const reducerFunction = (state, action) => {
 };
 
 function App() {
-    const [state, dispatch] = useReducer(reducerFunction, { secretWord: "" });
+    const [state, dispatch] = useReducer(reducerFunction, { secretWord: null });
     const success = false;
     const guessedWords = [];
 
@@ -27,6 +27,17 @@ function App() {
     useEffect(() => {
         getSecretWord(setSecretWord);
     }, [setSecretWord]);
+
+    if (state.secretWord === null) {
+        return (
+            <div className="container" data-test="spinner">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <p>Loading secret word...</p>
+            </div>
+        );
+    }
 
     return (
         <div data-test="component-app" className="container">
