@@ -1,52 +1,68 @@
 import { useCallback, useEffect, useReducer } from "react";
-import "./App.css";
-
+import {
+  LanguageContextProvider,
+  DEFAULT_LANGUAGE,
+} from "./contexts/languageContext";
 import Congrats from "./Congrats";
 import GuessedWords from "./GuessedWords";
 import Input from "./Input";
 import { getSecretWord } from "./actions";
+import "./App.css";
+import LanguagePicker from "./LanguagePicker";
 
-const reducerFunction = (state, action) => {
-    switch (action.type) {
-        case "setSecretWord":
-            return { ...state, secretWord: action.payload };
-        default:
-            throw Error(`Unknown action type ${action.type}`);
-    }
+const reducer = (state, { type, payload }) => {
+  switch (type) {
+    case "setSecretWord":
+      return { ...state, secretWord: payload };
+    case "setLanguage":
+      return { ...state, secretWord: payload };
+    default:
+      throw Error(`Unknown action type ${type}`);
+  }
 };
 
 function App() {
-    const [state, dispatch] = useReducer(reducerFunction, { secretWord: null });
-    const success = false;
-    const guessedWords = [];
+  const [state, dispatch] = useReducer(reducer, {
+    secretWord: null,
+    language: DEFAULT_LANGUAGE,
+  });
+  const success = false;
+  const guessedWords = [];
 
-    const setSecretWord = useCallback((secretWord) => {
-        dispatch({ type: "setSecretWord", payload: secretWord });
-    }, []);
+  const setSecretWord = useCallback((secretWord) => {
+    dispatch({ type: "setSecretWord", payload: secretWord });
+  }, []);
 
-    useEffect(() => {
-        getSecretWord(setSecretWord);
-    }, [setSecretWord]);
+  const setLanguage = useCallback((languageCode) => {
+    dispatch({ type: "setLanguage", payload: languageCode });
+  }, []);
 
-    if (state.secretWord === null) {
-        return (
-            <div className="container" data-test="spinner">
-                <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-                <p>Loading secret word...</p>
-            </div>
-        );
-    }
+  useEffect(() => {
+    getSecretWord(setSecretWord);
+  }, [setSecretWord]);
 
+  if (state.secretWord === null) {
     return (
-        <div data-test="component-app" className="container">
-            <h1>Jotto</h1>
-            <Congrats success={success} />
-            <Input success={success} secretWord={state.secretWord} />
-            <GuessedWords guessedWords={guessedWords} />
+      <div className="container" data-test="spinner">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
+        <p>Loading secret word...</p>
+      </div>
     );
+  }
+
+  return (
+    <div data-test="component-app" className="container">
+      <h1>Jotto</h1>
+      <LanguageContextProvider value={state.language}>
+        <LanguagePicker setLanguage={setLanguage} />
+        <Congrats success={success} />
+        <Input success={success} secretWord={state.secretWord} />
+        <GuessedWords guessedWords={guessedWords} />
+      </LanguageContextProvider>
+    </div>
+  );
 }
 
 export default App;

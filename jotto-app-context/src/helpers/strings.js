@@ -23,7 +23,8 @@ const languageStrings = {
     enterSecretWord: "Enter your own secret word",
     // END: Challenge #4: Enter Secret Word
     // Challenge #5: Server Error
-    serverError: "There was an error retrieving the secret word. Please try again later.",
+    serverError:
+      "There was an error retrieving the secret word. Please try again later.",
     // END: Challenge #5: Server Error
   },
   emoji: {
@@ -55,7 +56,11 @@ const languageStrings = {
   },
 };
 
-const getStringByLanguage = ({ languageCode, stringKey, strings = languageStrings }) => {
+export const getStringByLanguage = ({
+  languageCode,
+  stringKey,
+  strings = languageStrings,
+}) => {
   const fallbackLanguage = "en";
   if (!strings[languageCode] || !strings[languageCode][stringKey]) {
     console.warn(
@@ -66,6 +71,4 @@ const getStringByLanguage = ({ languageCode, stringKey, strings = languageString
   return strings[languageCode][stringKey];
 };
 
-export default {
-  getStringByLanguage,
-};
+export default { getStringByLanguage };
