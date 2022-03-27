@@ -1,3 +1,5 @@
+import { DEFAULT_LANGUAGE } from "../contexts/languageContext";
+
 const languageStrings = {
   en: {
     congrats: "Congratulations! You guessed the word!",
@@ -61,7 +63,7 @@ export const getStringByLanguage = ({
   stringKey,
   strings = languageStrings,
 }) => {
-  const fallbackLanguage = "en";
+  const fallbackLanguage = DEFAULT_LANGUAGE;
   if (!strings[languageCode] || !strings[languageCode][stringKey]) {
     console.warn(
       `There is no string for [stringKey=${stringKey}] of [languageCode=${languageCode}]`,
