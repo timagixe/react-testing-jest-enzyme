@@ -15,7 +15,8 @@ const reducer = (state, { type, payload }) => {
     case "setSecretWord":
       return { ...state, secretWord: payload };
     case "setLanguage":
-      return { ...state, secretWord: payload };
+      console.log("setLanguage");
+      return { ...state, language: payload };
     default:
       throw Error(`Unknown action type ${type}`);
   }
