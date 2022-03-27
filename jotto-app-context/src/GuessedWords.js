@@ -1,40 +1,62 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import { languageContext } from "./contexts/languageContext";
+import { getStringByLanguage } from "./helpers/strings.js";
 
-const GuessedWords = (props) => {
-  let contents
-  if (props.guessedWords.length === 0) {
-    contents = (
-      <span data-test="guess-instructions">
-        Try to guess the secret word!
-      </span>
-    );
-  } else {
-    const guessedWordsRows = props.guessedWords.map((word, index) => (
-      <tr data-test="guessed-word" key={ index }>
-        <td>{ word.guessedWord }</td>
-        <td>{ word.letterMatchCount }</td>
-      </tr>
-    ));
-    contents = (
-      <div data-test="guessed-words">
-        <h3>Guessed Words</h3>
-        <table className="table table-sm">
-          <thead className="thead-light">
-            <tr><th>Guess</th><th>Matching Letters</th></tr>
-          </thead>
-          <tbody>
-            { guessedWordsRows }
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-  return (
-    <div data-test="component-guessed-words">
-      { contents }
-    </div>
-  );
+const GuessedWords = ({ guessedWords }) => {
+  const language = React.useContext(languageContext);
+
+  const contents = useMemo(() => {
+    if (guessedWords.length === 0) {
+      return (
+        <span data-test="guess-instructions">
+          {getStringByLanguage({
+            languageCode: language,
+            stringKey: "guessPrompt",
+          })}
+        </span>
+      );
+    } else {
+      return (
+        <div data-test="guessed-words">
+          <h3>
+            {getStringByLanguage({
+              languageCode: language,
+              stringKey: "guessColumnHeader",
+            })}
+          </h3>
+          <table className="table table-sm">
+            <thead className="thead-light">
+              <tr>
+                <th>
+                  {getStringByLanguage({
+                    languageCode: language,
+                    stringKey: "guessedWords",
+                  })}
+                </th>
+                <th>
+                  {getStringByLanguage({
+                    languageCode: language,
+                    stringKey: "matchingLettersColumnHeader",
+                  })}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {guessedWords.map((word, index) => (
+                <tr data-test="guessed-word" key={index}>
+                  <td>{word.guessedWord}</td>
+                  <td>{word.letterMatchCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+  }, [language, guessedWords]);
+
+  return <div data-test="component-guessed-words">{contents}</div>;
 };
 
 GuessedWords.propTypes = {
@@ -42,7 +64,7 @@ GuessedWords.propTypes = {
     PropTypes.shape({
       guessedWord: PropTypes.string.isRequired,
       letterMatchCount: PropTypes.number.isRequired,
-    })
+    }),
   ).isRequired,
 };
 
