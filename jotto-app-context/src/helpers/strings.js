@@ -73,4 +73,5 @@ export const getStringByLanguage = ({
   return strings[languageCode][stringKey];
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { getStringByLanguage };
