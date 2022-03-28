@@ -3,6 +3,7 @@ import {
   LanguageContextProvider,
   DEFAULT_LANGUAGE,
 } from "./contexts/languageContext";
+import successContext from "./contexts/successContext";
 import Congrats from "./Congrats";
 import GuessedWords from "./GuessedWords";
 import Input from "./Input";
@@ -58,8 +59,10 @@ function App() {
       <h1>Jotto</h1>
       <LanguageContextProvider value={state.language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <Congrats success={success} />
-        <Input success={success} secretWord={state.secretWord} />
+        <successContext.SuccessProvider>
+          <Congrats />
+          <Input secretWord={state.secretWord} />
+        </successContext.SuccessProvider>
         <GuessedWords guessedWords={guessedWords} />
       </LanguageContextProvider>
     </div>
