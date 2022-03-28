@@ -4,6 +4,7 @@ import {
   DEFAULT_LANGUAGE,
 } from "./contexts/languageContext";
 import successContext from "./contexts/successContext";
+import guessedWordsContext from "./contexts/guessedWordsContext";
 import Congrats from "./Congrats";
 import GuessedWords from "./GuessedWords";
 import Input from "./Input";
@@ -28,8 +29,6 @@ function App() {
     secretWord: null,
     language: DEFAULT_LANGUAGE,
   });
-  const success = false;
-  const guessedWords = [];
 
   const setSecretWord = useCallback((secretWord) => {
     dispatch({ type: "setSecretWord", payload: secretWord });
@@ -59,11 +58,13 @@ function App() {
       <h1>Jotto</h1>
       <LanguageContextProvider value={state.language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <successContext.SuccessProvider>
-          <Congrats />
-          <Input secretWord={state.secretWord} />
-        </successContext.SuccessProvider>
-        <GuessedWords guessedWords={guessedWords} />
+        <guessedWordsContext.GuessedWordsProvider>
+          <successContext.SuccessProvider>
+            <Congrats />
+            <Input secretWord={state.secretWord} />
+          </successContext.SuccessProvider>
+          <GuessedWords />
+        </guessedWordsContext.GuessedWordsProvider>
       </LanguageContextProvider>
     </div>
   );

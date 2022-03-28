@@ -1,22 +1,14 @@
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import { languageContext } from "./contexts/languageContext";
 import { getStringByLanguage } from "./helpers/strings.js";
+import guessedWordsContext from "./contexts/guessedWordsContext";
 
-const GuessedWords = ({ guessedWords }) => {
+const GuessedWords = () => {
+  const [guessedWords] = guessedWordsContext.useGuessedWords();
   const language = React.useContext(languageContext);
 
   const contents = useMemo(() => {
-    if (guessedWords.length === 0) {
-      return (
-        <span data-test="guess-instructions">
-          {getStringByLanguage({
-            languageCode: language,
-            stringKey: "guessPrompt",
-          })}
-        </span>
-      );
-    } else {
+    if (guessedWords.length) {
       return (
         <div data-test="guessed-words">
           <h3>
@@ -54,18 +46,18 @@ const GuessedWords = ({ guessedWords }) => {
         </div>
       );
     }
+
+    return (
+      <span data-test="guess-instructions">
+        {getStringByLanguage({
+          languageCode: language,
+          stringKey: "guessPrompt",
+        })}
+      </span>
+    );
   }, [language, guessedWords]);
 
   return <div data-test="component-guessed-words">{contents}</div>;
-};
-
-GuessedWords.propTypes = {
-  guessedWords: PropTypes.arrayOf(
-    PropTypes.shape({
-      guessedWord: PropTypes.string.isRequired,
-      letterMatchCount: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
 };
 
 export default GuessedWords;
