@@ -1,8 +1,12 @@
 import React from "react";
 import { mount } from "enzyme";
 
-import App from "./App";
+import Input from "./Input";
+import Congrats from "./Congrats";
+import GuessedWords from "./GuessedWords";
 import { findByTestAttr } from "../test/testUtils.js";
+import guessedWordsContext from "./contexts/guessedWordsContext";
+import successContext from "./contexts/successContext";
 
 /**
  * Create wrapper with specified initial conditions,
@@ -12,17 +16,29 @@ import { findByTestAttr } from "../test/testUtils.js";
  * @param {object} state - Initial conditions.
  * @returns {Wrapper} - Enzyme wrapper of mounted App component
  */
-const setup = (state = {}) => {
-  // TODO: apply state
-  const wrapper = mount(<App />);
+const setup = ({ guessedWords, secretWord, success }) => {
+  const wrapper = mount(
+    <guessedWordsContext.GuessedWordsProvider>
+      <successContext.SuccessProvider>
+        <Congrats />
+        <Input secretWord={secretWord} />
+        <GuessedWords />
+      </successContext.SuccessProvider>
+    </guessedWordsContext.GuessedWordsProvider>,
+  );
+  const mockButtonEvent = { preventDefault() {} };
 
-  // add value to input box
   const inputBox = findByTestAttr(wrapper, "input-box");
   inputBox.simulate("change", { target: { value: "train" } });
 
-  // simulate click on submit button
   const submitButton = findByTestAttr(wrapper, "submit-button");
-  submitButton.simulate("click", { preventDefault() {} });
+  submitButton.simulate("click", mockButtonEvent);
+
+  for (let guess of guessedWords) {
+    const mockInputEvent = { target: { value: guess.guessedWord } };
+    inputBox.simulate("change", mockInputEvent);
+    submitButton.simulate("click", mockButtonEvent);
+  }
 
   return wrapper;
 };
