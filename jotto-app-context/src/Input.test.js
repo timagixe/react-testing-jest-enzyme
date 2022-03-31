@@ -7,6 +7,7 @@ import {
   LanguageContextProvider,
 } from "./contexts/languageContext";
 import Input from "./Input";
+import successContext from "./contexts/successContext";
 
 /**
  * Factory function to create a ShallowWrapper for the Congrats component.
@@ -21,7 +22,9 @@ const setup = ({
 } = {}) => {
   return mount(
     <LanguageContextProvider value={language}>
-      <Input success={success} secretWord={secretWord} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Input secretWord={secretWord} />
+      </successContext.SuccessProvider>
     </LanguageContextProvider>,
   );
 };
