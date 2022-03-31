@@ -34,7 +34,7 @@ function Input({ secretWord }) {
           onClick={(evt) => {
             evt.preventDefault();
             const letterMatchCount = getLetterMatchCount(
-              currentGuess.guessedWord,
+              currentGuess,
               secretWord,
             );
             const nextGuessedWord = {

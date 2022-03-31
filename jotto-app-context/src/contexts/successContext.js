@@ -22,6 +22,5 @@ const SuccessProvider = (props) => {
   );
 };
 
-const module = { useSuccess, SuccessProvider };
-
-export default module;
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { useSuccess, SuccessProvider };

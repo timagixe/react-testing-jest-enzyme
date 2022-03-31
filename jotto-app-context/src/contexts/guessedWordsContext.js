@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 
 const guessedWordsContext = React.createContext();
 
@@ -25,6 +25,5 @@ const GuessedWordsProvider = (props) => {
   return <guessedWordsContext.Provider value={value} {...props} />;
 };
 
-const module = { useGuessedWords, GuessedWordsProvider };
-
-export default module;
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { useGuessedWords, GuessedWordsProvider };
